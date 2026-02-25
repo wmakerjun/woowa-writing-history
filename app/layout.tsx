@@ -5,8 +5,8 @@ import 'nextra-theme-docs/style.css'
 import './globals.css'
 
 export const metadata = {
-  title: '우아한테크코스 공식문서',
-  description: '우아한테크코스 교육 모델과 자산을 담은 공식문서'
+  title: '우아한테크코스 크루 글쓰기 아카이브',
+  description: '우아한테크코스 크루들의 글을 기수별로 모아 보는 이야기 저장소'
 }
 
 const logo = (
@@ -36,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Navbar>
           }
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/woowacourse/2026-okr/tree/main/docs-site"
+          docsRepositoryBase="https://github.com/woowacourse-projects/woowa-writing-history/tree/main"
           sidebar={{
             defaultMenuCollapseLevel: 1,
             toggleButton: true

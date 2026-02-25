@@ -12,16 +12,8 @@ export default {
       typesetting: 'article'
     }
   },
-  'education-model': {
-    title: '교육 가이드',
-    type: 'page'
-  },
-  'ai-experience': {
-    title: 'AI와 교육 실험',
-    type: 'page'
-  },
   'tech-blog-book': {
-    title: '우아한테크코스 도서',
+    title: '크루 글쓰기 아카이브',
     type: 'page'
   }
 }

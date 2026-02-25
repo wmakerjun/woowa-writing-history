@@ -1,3 +1,4 @@
 export default {
-  index: '개요'
+  index: '개요',
+  writings: '글 모음'
 }

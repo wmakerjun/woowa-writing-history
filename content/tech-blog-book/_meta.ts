@@ -1,8 +1,8 @@
 export default {
   index: '개요',
-  '-- 크루 이야기': {
+  '-- generation': {
     type: 'separator',
-    title: '크루 이야기'
+    title: '기수별 기록'
   },
   'generation-1': '1기 (2019)',
   'generation-2': '2기 (2020)',
