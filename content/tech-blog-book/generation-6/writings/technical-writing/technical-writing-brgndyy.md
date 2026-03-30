@@ -1,0 +1,682 @@
+---
+author: "brgndyy"
+generation: 6
+level: "technical-writing"
+original_filename: "테크니컬 라이팅.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/d5179caca558316eca395b0fbba9f3b71582ece6/%ED%85%8C%ED%81%AC%EB%8B%88%EC%BB%AC%20%EB%9D%BC%EC%9D%B4%ED%8C%85.md"
+source_path: "테크니컬 라이팅.md"
+---
+
+# 리액트에서의 동시성
+
+리액트는 18 버전에 들어서 `동시성 모드(Concurrent mode)`라는 새로운 개념을 도입했다.
+
+이 글은 리액트에서의 동시성 개념을 다룰 예정이다.
+
+그 전에, 그럼 `동시성`은 무엇을 의미할까?
+
+## - 동시성
+
+`동시성`은 리액트에서만 쓰이는 개념은 아니고, 본래 컴퓨터 과학의 개념이다.
+
+여러 작업을 동시에 처리하는 것처럼 보이게 하는 프로그래밍 및 시스템 설계 기법이다.
+
+> 여기서 중요한 부분은 동시성은 여러 작업을 실제로 동시에 처리하는 자체가 아니라, 그렇게 `보이도록`한다는 것이다.
+
+무슨 이야기일까?
+
+<img width="281" alt="스크린샷 2024-09-29 오후 2 00 39" src="https://github.com/user-attachments/assets/ae373a01-1243-48c1-90f1-dc8f7bdf4c67">
+
+위의 사진에서 동그라미 하나당 작업(work)이라고 예시를 들어보자.
+
+동시성은 각각의 작업을 빠르게 전환(Context Switching)하면서 동시에 이루어지는 것처럼 보이도록 한다.
+
+동시성과 비교 되는 개념은 바로 `병렬성`인데, 이는 아예 전환을 하면서 작업이 이루어지는 것이 아니라 동시에 2가지의 작업을 한다.
+
+<img width="376" alt="스크린샷 2024-09-29 오후 2 04 10" src="https://github.com/user-attachments/assets/13e1f051-e4ab-488c-910e-db1b74435905">
+
+자판기에서 음료를 뽑는다 사진을 예로 들어보자.
+
+`동시성`은 하나의 자판기에서 각각의 줄에 서있는 사람이 번갈아가면서 음료를 받는다.
+
+하지만 `병렬성`은 자판기 자체가 2대이다.
+
+| 특성      | 동시성 (Concurrency)                         | 병렬성 (Parallelism)                  |
+| --------- | -------------------------------------------- | ------------------------------------- |
+| 정의      | 여러 작업이 동시에 진행되는 것처럼 보이는 것 | 여러 작업이 실제로 동시에 실행되는 것 |
+| 실행 방식 | 작업 간 빠른 전환 (Context Switching)        | 동시에 여러 작업 실행                 |
+| 필요 자원 | 단일 프로세서로 가능                         | 여러 프로세서 또는 코어 필요          |
+| 목적      | 여러 작업을 효율적으로 관리                  | 전체 처리 속도 향상                   |
+| 복잡성    | 상대적으로 구현이 복잡할 수 있음             | 구현이 더 단순할 수 있음              |
+| 확장성    | 리소스 제약 내에서 효율적                    | 하드웨어 추가로 선형적 성능 향상 가능 |
+| 예시      | 싱글 코어에서 멀티태스킹                     | 멀티코어 프로세서에서 동시 연산       |
+
+위의 표를 보면 알수 있듯이, 동시성과 병렬성은 서로 대척점에 있는 관계는 아니고 상호보완적인 관계이다.
+
+동시성은 작업을 효율적으로 관리하는데에 초점을 맞춘 개념이며,병렬성은 실제로 작업을 동시에 처리함으로써 성능 향상에 집중한다.
+
+하나의 프로세스에서 여러개의 스레드를 병렬성으로 처리하면서, 각각의 단일 스레드에서는 동시성을 활용하여 효율성을 높일수 있다.
+
+---
+
+## - 리액트에서의 동시성
+
+그렇다면 리액트에서 말하는 동시성은 무엇이며, 어떤 문제를 해결하기 위해 도입했을까?
+
+메인테이너인 [Dan Abramov는 동시성에 관하여 이렇게 설명](https://github.com/reactwg/react-18/discussions/46#discussioncomment-846786)했다.
+
+![](https://user-images.githubusercontent.com/810438/121394782-9be1e380-c949-11eb-87b0-40cd17a1a7b0.png)
+
+위의 사진은 동시성이 존재하지 않았을때의 예시 사진이다.
+
+밥과의 대화를 하기 위해서는 먼저 앨리스와의 대화를 끝마쳐야한다.
+
+![](https://user-images.githubusercontent.com/810438/121394880-b4ea9480-c949-11eb-989e-06a95edb8e76.png)
+
+하지만 동시성이 존재하게 된다면, 앨리스와 대화를 하다가도 이를 일시 정지 하고 밥과 대화를 할 수 있다.
+
+밥과의 대화가 끝난다면 그 후에 다시 앨리스와의 대화를 진행한다.
+
+여기서 동시성이라는 것이 무조건적으로 `두 사람과 동시에 통화한다는 것을 의미하지는 않는다.`라는 점을 유의해야한다.
+
+여기서의 동시성은 각각 대화에 우선 순위를 부여하여 어떤 대화가 더 시급한지를 따질 수 있음을 의미한다.
+
+이 예시를 이제 리액트로 대입해보자면, 여기서의 대화는 상태 변화다.
+
+![](https://user-images.githubusercontent.com/810438/121396132-f760a100-c94a-11eb-959c-b95a6647d759.png)
+
+즉, 우선 순위를 정하고 순위가 높은 상태 변화 작업을 먼저 하는 것이다.
+
+### - 동시성 개념을 도입하기 전
+
+동시성 개념이 도입되기 전인 16버전의 코드로 예를 들어보자.
+
+```jsx
+export default function App() {
+  const [list, setList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchValue = (event) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    const filteredList = longAndComplexFilter(largeDataSet, term);
+    setList(filteredList);
+  };
+
+  return (
+    <div>
+      <input value={searchTerm} onChange={handleSearchValue} />
+      <List items={list} />
+    </div>
+  );
+}
+```
+
+위의 코드는 인풋에 값을 입력하면 필터링 하는 무거운 연산을 하고, 그걸 상태로 관리하는 로직이다.
+
+![화면 기록 2024-09-29 오후 3 03 48](https://github.com/user-attachments/assets/d851f993-17e0-4415-88db-d97d23a4ad2c)
+
+분명히 abcd를 순차적으로 입력했지만, 바로 UI에 값이 업데이트 되지 않고 필터링 작업까지 완료 된 후 렌더링 된다.
+
+이러한 부분에서 사용자는 "왜 입력했는데, 아무런 반응도 없지?" 라고 생각할수 밖에 없으며, 이는 사용자 경험 저하로 이어진다.
+
+왜 이러한 문제가 발생할까?
+
+---
+
+## - 16버전에서 발생하던 Rendering blocking
+
+리액트 16버전에서의 렌더링은 항상 동기식이었다.
+
+즉, 상태가 업데이트되면 리액트는 전체 컴포넌트 트리를 탐색하여 필요한 모든 변경 사항을 계산하고 DOM에 적용할 때까지 작업을 중단하지 않았다.
+
+이렇게 동기적으로 렌더링이 진행되면, 큰 연산이나 복잡한 컴포넌트 트리가 있는 경우 메인 스레드가 오랫동안 블로킹 된다.
+
+이로 인해 사용자는 입력에 대한 즉각적인 반응을 받지 못하고, 애플리케이션은 일시적으로 응답하지 않는 것처럼 보일 수 있는 문제가 있다.
+
+[공식 문서](https://react.dev/blog/2022/03/29/react-v18#what-is-concurrent-react)에서는 이렇게 설명하고 있다.
+
+> With synchronous rendering, once an update starts rendering, nothing can interrupt it until the user can see the result on screen.
+
+> 동기식 렌더링에서는 업데이트가 시작되면 사용자가 화면에서 결과를 볼 수 있을 때까지 아무 것도 그것을 중단할 수 없습니다.
+
+이러한 문제점을 담은 내부 동작을 코드로 살펴보면 다음과 같을 것이다.
+
+```tsx
+function renderRoot(root) {
+  // 모든 작업을 동기적으로 처리
+  while (workInProgress !== null) {
+    workInProgress = performUnitOfWork(workInProgress);
+  }
+
+  // 작업이 완료되면 commit 단계로 이동
+  commitRoot(root);
+}
+```
+
+하지만 18버전에서는 다르다.
+
+18버전에서는 각각의 작업들에 대한 우선순위가 정해져있고 해당 작업에서 이를 양보(yield)함으로써 다른 렌더링 작업들과도 교차될 수 있다.
+
+[소스 코드](https://github.dev/facebook/react/tree/main/packages)에서 밑의 코드를 찾아볼 수 있다.
+
+```ts
+function workLoopConcurrent() {
+  // Scheduler가 양보를 요청할 때까지 작업을 수행한다.
+  while (workInProgress !== null && !shouldYield()) {
+    performUnitOfWork(workInProgress);
+  }
+}
+```
+
+만약 작업 해야할 부분이 남아있고, 이가 다른 작업에 비해 우선순위가 아니라면 현재 작업을 진행한다.
+
+작업에 대한 우선순위는 리액트 Scheduler 패키지에서 다룬다.
+
+```ts
+export type PriorityLevel = 0 | 1 | 2 | 3 | 4 | 5;
+
+export const NoPriority = 0;
+export const ImmediatePriority = 1;
+export const UserBlockingPriority = 2;
+export const NormalPriority = 3;
+export const LowPriority = 4;
+export const IdlePriority = 5;
+```
+
+각각의 우선 순위가 어떠한 부분을 뜻하는지 살펴보자.
+
+### 1. No Priority
+
+NoPriority는 우선순위를 나타내는 여러 값 중 하나로, 이는 '우선순위 없음'을 의미한다.
+
+즉, 해당 작업이 어떤 우선순위도 가지고 있지 않아 스케줄링에서 고려되지 않는 상태를 나타낸다. (idle 상태)
+
+이는 어떤 작업이 현재 진행되지 않거나 대기 상태에 있을 때, 또는 처리할 필요가 없어진 작업을 나타낼 때 사용된다.
+
+작업들에 대해서 아직 우선순위가 할당 되지 않았거나, 해당 작업이 더 이상 필요하지 않게 되면 NoPriority 로 설정하여 스케줄러가 해당 작업을 처리할수 있다.
+
+---
+
+### 2. Immediate Priority
+
+매우 긴급하고 즉각적으로 처리해야 하는 업데이트이다.
+
+키보드 입력과 같은 상호작용을 예로 들 수 있다.
+
+---
+
+### 3. User Blocking Priority
+
+사용자가 직접적으로 인지할 수 있는 작업으로, 반응 시간이 빠르지 않으면 사용자 경험이 저하된다.
+
+버튼 클릭 같은 이벤트 응답이 있다.
+
+---
+
+### 4. Normal Priority
+
+일반적인 데이터 가져오기나 화면 업데이트와 같은 표준 우선순위의 작업이다.
+
+사용자 경험에 중요하지만 즉각적인 처리가 필요하지 않은 작업들이 이에 해당 한다.
+
+---
+
+### 5. Low Priority
+
+배경에서 수행되어도 되는 작업들, 예를 들어 데이터를 미리 가져오거나 로깅 같은 비교적 중요도가 낮은 작업이다.
+
+---
+
+### 6. Idle Priority
+
+CPU가 비는 시간에 수행될 수 있는 작업들이다.
+
+이 우선순위의 작업은 시스템이 비교적 한가할 때 수행되며, 예를 들어 오프스크린 이미지 불러오기(사용자가 아직 보지 않은 이미지)나 비활성 UI 요소의 데이터 처리가 이에 해당한다.
+
+---
+
+16버전에서는 위의 Rendering blocking 문제를 디바운스나 쓰로틀을 활용하여 해결 하려했지만, 바로 직관적인 결과를 보여주지는 못하므로 근본적인 해결책이 되지는 못했다.
+
+리액트 18 버전에서는 동시성 개념을 다룬 `useTransition` 훅을 사용한다면 이러한 문제점을 해결할 수 있다.
+
+```tsx
+function App() {
+  const [list, setList] = useState<DataSet[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    startTransition(() => {
+      const filteredList = longAndComplexFilter({ data: largeDataSet, term });
+      setList(filteredList);
+    });
+  };
+
+  return (
+    <div>
+      <input value={searchTerm} onChange={handleSearch} />
+      {isPending ? <div>로딩 중입니다!</div> : <List items={list} />}
+    </div>
+  );
+}
+```
+
+![화면 기록 2024-09-29 오후 3 56 25 (3)](https://github.com/user-attachments/assets/4abd05b5-02f5-4423-a743-e96d637130ff)
+
+`로딩 중입니다!` 메세지를 먼저 띄워주면서 무거운 연산 자체를 뒤로 미뤄서 사용자 경험을 높였다.
+
+어떻게 이러한 부분이 가능한걸까?
+
+> 이 글에서는 실제로 `useTransition`이 내부적으로 어떻게 동작하는지를 알아보기보다, 리액트에서 어떤 흐름으로 동시성을 구현했는지에 초점을 맞춘다.
+
+---
+
+## - 리액트의 Scheduler
+
+리액트는 많은 모듈로 나누어져있지만, 기본적으로 재조정을 담당하는 `reconciler`패키지와 동시성을 담당하는 `scheduler`패키지가 존재한다.
+
+위의 hook말고도 수많은 hook들이 존재하지만, 위를 예시로 동시성 관점에서 어떻게 리액트가 상태를 업데이트 하는지 살펴보자.
+
+우리가 만약 `useState`나 `useReducer`를 사용한다면 리액트 내부적으로는 `dispatchSetState`를 호출한다.
+
+한번 `dispatchSetState` 내부 코드를 살펴보자.
+
+### - dispatchSetState
+
+```ts
+function dispatchSetState<S, A>(
+  fiber: Fiber,
+  queue: UpdateQueue<S, A>,
+  action: A
+): void {
+  const lane = requestUpdateLane(fiber);
+  const didScheduleUpdate = dispatchSetStateInternal(
+    fiber,
+    queue,
+    action,
+    lane
+  );
+  if (didScheduleUpdate) {
+    startUpdateTimerByLane(lane);
+  }
+}
+```
+
+
+`dispatchSetStateInternal`는 해당 관련된 작업을 fiber 작업 큐에 등록하고 관리하는 실제적인 함수이다.
+
+### - dispatchSetStateInternal
+
+```ts
+function dispatchSetStateInternal<S, A>(
+  fiber: Fiber,
+  queue: UpdateQueue<S, A>,
+  action: A,
+  lane: Lane,
+): boolean {
+
+  // ... 중략
+
+    const root = enqueueConcurrentHookUpdate(fiber, queue, update, lane);
+
+    if (root !== null) {
+      scheduleUpdateOnFiber(root, fiber, lane);
+      entangleTransitionUpdate(root, queue, lane);
+      return true;
+    }
+  }
+  return false;
+}
+```
+
+안에 많은 동작들이 존재하지만, 동시성을 다루는 `scheduleUpdateOnFiber` 함수만 살펴보자.
+
+## - scheduleUpdateOnFiber
+
+```ts
+export function scheduleUpdateOnFiber(
+  root: FiberRoot,
+  fiber: Fiber,
+  lane: Lane
+) {
+  // .. 중략
+
+  if (root === workInProgressRoot) {
+    // 현재 렌더링 중인 트리에 업데이트가 들어왔을때
+    // 즉, 이 루트가 이미 렌더링 중인 상태에서 새로운 업데이트가 들어온 경우를 처리
+
+    if ((executionContext & RenderContext) === NoContext) {
+      // 현재 렌더링 중이지 않은 상황에서 교차 업데이트를 기록
+      workInProgressRootInterleavedUpdatedLanes = mergeLanes(
+        workInProgressRootInterleavedUpdatedLanes,
+        lane
+      );
+    }
+
+    if (workInProgressRootExitStatus === RootSuspendedWithDelay) {
+      // 새로운 업데이트가 들어왔을떄, 현재 작업을 업데이트하기 전에 중단 상태로 표시한다.
+      // 현재 렌더링을 중단하고, 새로운 업데이트로 전환한다.
+
+      markRootSuspended(
+        root,
+        workInProgressRootRenderLanes,
+        workInProgressDeferredLane,
+        workInProgressRootDidSkipSuspendedSiblings
+      );
+      // 새로운 업데이트가 들어왔으므로, 루트를 중단 상태로 표시한다.
+      // 여기서 `markRootSuspended` 함수는 루트의 상태를 중단된 상태로 바꾸고,
+      // 렌더링 작업을 지연 상태로 만든다.
+      // 우리가 사용하는 Suspense 생각하면 된다.
+    }
+  }
+
+  // 루트가 이미 작업 중인지 확인하고, 아니면 스케줄링을 진행한다.
+  ensureRootIsScheduled(root);
+}
+```
+
+요약하자면 `scheduleUpdateOnFiber`는 렌더링 중에 우선순위가 높은 새로운 work가 들어왔을때, 기존의 작업을 중단하고 새로운 작업부터 먼저 처리하는 역할을 한다.
+
+그리고 `ensureRootIsScheduled`가 Scheduler 패키지와 직접적인 연결을 해주는 역할을 한다.
+
+## - ensureRootIsScheduled
+
+```ts
+export function ensureRootIsScheduled(root: FiberRoot): void {
+  // 중략
+  scheduleImmediateTask(processRootScheduleInMicrotask);
+}
+
+function scheduleImmediateTask(cb: () => mixed) {
+  // 중략
+  Scheduler_scheduleCallback(ImmediateSchedulerPriority, cb);
+}
+```
+
+드디어 `Reconciler`와 `Scheduler`와의 연결 부분을 찾았다.
+
+`scheduleImmediateTask` 함수 안에 `Scheduler_scheduleCallback`를 호출하여 직접적으로 스케쥴러가 작동하도록 한다.
+
+`Scheduler_scheduleCallback`은 실제로 우선순위를 가지고 스케쥴러 내부에서 사용되는 `Task`라는 객체를 만들어내는 역할을 한다.
+
+해당 코드를 살펴보자.
+
+## - Scheduler_scheduleCallback
+
+```js
+function unstable_scheduleCallback(
+  priorityLevel: PriorityLevel, // 작업의 우선순위 레벨
+  callback: Callback,           // 실행할 콜백 함수
+  options?: {delay: number},    // 작업을 지연시킬 옵션, 지연 시간
+): Task {
+  var currentTime = getCurrentTime(); // 현재 시간을 가져옴
+
+  var startTime;
+  if (typeof options === 'object' && options !== null) {
+    var delay = options.delay;
+    if (typeof delay === 'number' && delay > 0) {
+      startTime = currentTime + delay; // delay 값이 있다면 현재 시간에 delay 추가
+    } else {
+      startTime = currentTime; // delay 값이 없으면 바로 시작
+    }
+  } else {
+    startTime = currentTime; // options 객체가 없으면 바로 시작
+  }
+
+  var timeout;
+  switch (priorityLevel) {
+    case ImmediatePriority:
+      timeout = -1;
+      break;
+    case UserBlockingPriority:
+      timeout = userBlockingPriorityTimeout;
+      break;
+    case IdlePriority:
+      timeout = maxSigned31BitInt;
+      break;
+    case LowPriority:
+      timeout = lowPriorityTimeout;
+      break;
+    case NormalPriority:
+    default:
+      timeout = normalPriorityTimeout;
+      break;
+  }
+
+  var expirationTime = startTime + timeout; // 작업이 만료될 시간을 계산
+
+  var newTask: Task = {
+    id: taskIdCounter++,      // 고유 ID 증가
+    callback,                 // 작업에 대한 콜백 함수
+    priorityLevel,            // 우선순위
+    startTime,                // 시작 시간
+    expirationTime,           // 만료 시간
+    sortIndex: -1,            // 정렬 인덱스 (초기화)
+  };
+
+  if (startTime > currentTime) {
+    // 이 작업이 지연 작업일 때
+    newTask.sortIndex = startTime; // 정렬 인덱스를 시작 시간으로 설정
+    push(timerQueue, newTask);     // 지연 작업 큐에 추가
+    if (peek(taskQueue) === null && newTask === peek(timerQueue)) {
+      // 모든 작업이 지연되고 이 작업이 가장 빨리 실행되어야 하는 작업일 때
+      if (isHostTimeoutScheduled) {
+        // 이미 예약된 타임아웃이 있다면 이를 취소
+        cancelHostTimeout();
+      } else {
+        isHostTimeoutScheduled = true;
+      }
+      // 새 타임아웃을 스케줄링
+      requestHostTimeout(handleTimeout, startTime - currentTime);
+    }
+  } else {
+    newTask.sortIndex = expirationTime; // 즉시 실행할 작업일 때 만료 시간으로 정렬 인덱스 설정
+    push(taskQueue, newTask);           // 작업 큐에 추가
+    // 이미 작업이 진행 중이 아니면 호스트 콜백을 스케줄링
+    if (!isHostCallbackScheduled && !isPerformingWork) {
+      isHostCallbackScheduled = true;
+      requestHostCallback();
+    }
+  }
+
+  return newTask; // 새 작업 반환
+}
+
+```
+
+위 코드의 핵심은 위에 기재한 우선 순위 레벨과 만료시간을 가진 `Task`객체를 만들어내는 것이다.
+
+이 Task는 리액트가 처리할 작업에 대한 단위라고 이해하면 된다.
+
+만약 작업을 딜레이 되어야하거나, 빨리 처리되어야한다면, 또 기존 스케쥴에 등록된 작업이라면 이를 취소하고 새롭게 Task를 예약한다.
+
+그게 아니라면 `requestHostCallback`을 호출하여 스케줄링을 진행한다.
+
+## - [requestHostCallback](https://github.dev/facebook/react)
+
+```js
+function requestHostCallback() {
+  if (!isMessageLoopRunning) {
+    isMessageLoopRunning = true;
+    schedulePerformWorkUntilDeadline();
+  }
+}
+```
+
+`requestHostCallback`함수에서는 호스트 환경에 콜백을 요청하여 스케줄러가 작업을 처리할 수 있도록 한다.
+
+여기서 호스트 환경은 브라우저나 Node.js 같은 런타임 환경을 말한다.
+
+소스 코드를 더 살펴보면, 실행되는 환경에 따라서 `setImmediate`나 `setTimeout`을 사용하는 것을 볼수 있다.
+
+<img width="504" alt="스크린샷 2024-10-30 오후 3 09 44" src="https://github.com/user-attachments/assets/62a79346-fda0-4bed-952e-0599aeb3129c">
+
+여기서 `MessageChannel`이라는 모듈이 나오는데, 이는 두개의 포트가 서로 통신할 수 있도록 해주는 Web API이다.
+
+`performWorkUntilDeadline`라는 스케줄러의 주 함수를 이벤트루프로 보내고 작업을 예약하는데에 사용된다.
+
+보통 비동기 콜백을 제어하기 위해 `setTimeout`을 사용하는데, 0ms로 설정한다고 하더라도 사실 4ms의 오차가 있다.
+
+> 주석의 설명을 살펴보면 setTimeout의 지연 클램핑을 방지하기 위해 MessageChannel을 사용한다고 기재되어있다.
+
+이 성능상의 이점을 누리기 위해 MessageChannel을 활용했다고 이해하면 된다.
+
+## - performWorkUntilDeadline
+
+```js
+const performWorkUntilDeadline = () => {
+  if (isMessageLoopRunning) {
+    const currentTime = getCurrentTime(); // 현재 시간을 가져오기
+    // 메인 스레드가 얼마나 오랫동안 차단되었는지를 측정하기 위해 시작 시간을 기록
+    startTime = currentTime;
+
+    // 스케줄러 작업 중에 오류가 발생하면 현재 브라우저 작업을 중단하고
+    // 오류가 관찰될 수 있도록 함
+    // flushWork`가 오류를 발생시키면 `hasMoreWork`는 true로 유지되고,
+    // 작업 루프는 계속 실행
+    let hasMoreWork = true;
+    try {
+      hasMoreWork = flushWork(currentTime); // 현재 시간을 전달하여 작업을 플러시
+    } finally {
+      if (hasMoreWork) {
+        // 아직 처리할 작업이 더 있다면, 현재 작업이 끝난 직후에
+        // 다음 메시지 이벤트를 예약하여 작업을 이어서 실행
+        schedulePerformWorkUntilDeadline();
+      } else {
+        isMessageLoopRunning = false; // 더 이상 처리할 작업이 없으면 루프 종료
+      }
+    }
+  }
+};
+```
+
+이 `performWorkUntilDeadline`의 역할은 스케줄러가 계속해서 작업을 처리하도록 하는 루프 역할을 한다.
+
+`isMessageLoopRunning` 즉, 스케줄러의 작업이 남아있다면 `flushWork`에 현재 시간을 전달하여 실행한다.
+
+또한 아직 처리해야할 작업이 남아있다면, 현재 작업이 끝난 후 다음 메세지 이벤트를 예약하여 `schedulePerformWorkUntilDeadline`를 실행시키며 작업을 이어나간다.
+
+## - flushWork
+
+```js
+function flushWork(initialTime: number) {
+  // 다음 작업 스케줄링을 위해 필요 시 `isHostCallbackScheduled`를 초기화
+  isHostCallbackScheduled = false;
+
+  if (isHostTimeoutScheduled) {
+    // 스케줄링된 타임아웃이 필요하지 않다면 이를 취소
+    isHostTimeoutScheduled = false;
+    cancelHostTimeout();
+  }
+
+  // 작업 처리 중임을 표시
+  isPerformingWork = true;
+  const previousPriorityLevel = currentPriorityLevel; // 현재 우선순위 저장
+  try {
+    if (enableProfiling) {
+      // 프로파일링이 활성화된 경우 `workLoop`을 통해 작업 처리
+      try {
+        return workLoop(initialTime);
+      } catch (error) {
+        // 오류가 발생하면 해당 작업을 마킹하고 throw
+        if (currentTask !== null) {
+          const currentTime = getCurrentTime();
+          markTaskErrored(currentTask, currentTime);
+          currentTask.isQueued = false;
+        }
+        throw error;
+      }
+    } else {
+      // 프로덕션 코드 경로에서는 catch문 없이 `workLoop` 실행
+      return workLoop(initialTime);
+    }
+  } finally {
+    // 작업이 끝나면 상태 및 우선순위 복구
+    currentTask = null;
+    currentPriorityLevel = previousPriorityLevel;
+    isPerformingWork = false;
+    if (enableProfiling) {
+      const currentTime = getCurrentTime();
+      markSchedulerSuspended(currentTime);
+    }
+  }
+}
+
+```
+
+## - workLoop
+
+```js
+function workLoop(initialTime: number) {
+  let currentTime = initialTime; // 초기 시간을 가져옴
+  advanceTimers(currentTime);    // 타이머 상태를 갱신
+  currentTask = peek(taskQueue); // 작업 큐에서 현재 작업 가져옴
+
+  while (
+    currentTask !== null &&
+    !(enableSchedulerDebugging && isSchedulerPaused)
+  ) {
+    // 현재 작업의 만료 시간이 아직 되지 않았고, 작업 기한에 도달한 경우 루프 중단
+    if (currentTask.expirationTime > currentTime && shouldYieldToHost()) {
+      break;
+    }
+    const callback = currentTask.callback;
+    if (typeof callback === 'function') {
+      currentTask.callback = null;              // 콜백 초기화
+      currentPriorityLevel = currentTask.priorityLevel; // 현재 우선순위로 설정
+      const didUserCallbackTimeout = currentTask.expirationTime <= currentTime;
+      if (enableProfiling) {
+        markTaskRun(currentTask, currentTime);   // 작업 시작 시간 마킹
+      }
+      const continuationCallback = callback(didUserCallbackTimeout); // 콜백 실행
+      currentTime = getCurrentTime();
+      if (typeof continuationCallback === 'function') {
+        // 콜백이 다음에 실행될 작업을 반환하면 현재 루프 중단
+        currentTask.callback = continuationCallback;
+        if (enableProfiling) {
+          markTaskYield(currentTask, currentTime); // 작업 일시 중단 마킹
+        }
+        advanceTimers(currentTime);
+        return true; // 작업이 남았음을 반환
+      } else {
+        if (enableProfiling) {
+          markTaskCompleted(currentTask, currentTime); // 작업 완료 마킹
+          currentTask.isQueued = false;
+        }
+        if (currentTask === peek(taskQueue)) {
+          pop(taskQueue); // 완료된 작업을 큐에서 제거
+        }
+        advanceTimers(currentTime);
+      }
+    } else {
+      pop(taskQueue); // 비어 있거나 잘못된 작업 제거
+    }
+    currentTask = peek(taskQueue); // 다음 작업 가져옴
+  }
+
+  // 남아 있는 작업이 있는지 여부를 반환
+  if (currentTask !== null) {
+    return true;
+  } else {
+    const firstTimer = peek(timerQueue);
+    if (firstTimer !== null) {
+      requestHostTimeout(handleTimeout, firstTimer.startTime - currentTime);
+    }
+    return false;
+  }
+}
+
+```
+
+이 `flushWork`와 `workLoop`이 실제적으로 task를 처리하고 다음 작업을 예약하는 로직이다.
+
+`flushWork`는 작업을 준비하고 `workLoop`을 통해 작업 루프를 실행한다.
+
+`workLoop`은 작업 큐의 작업을 만료 시간과 우선순위에 따라 순서대로 처리하고, 이를 작업이 완료 될때까지 계속 반복한다.
+
+작업이 남아있으면 추가 예약을 요청하고, 완료 되면 다음 타이머를 설정해서 루프를 마친다.

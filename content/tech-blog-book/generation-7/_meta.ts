@@ -1,4 +1,4 @@
 export default {
   index: '개요',
-  writings: '글 모음'
+  writings: '글 모음 (286편)'
 }

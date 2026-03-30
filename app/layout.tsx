@@ -1,5 +1,5 @@
 import { Layout, Navbar, ThemeSwitch } from 'nextra-theme-docs'
-import { Head } from 'nextra/components'
+import { Head, Search } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
@@ -34,6 +34,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Navbar logo={logo}>
               <ThemeSwitch lite className="theme-switch-navbar" />
             </Navbar>
+          }
+          search={
+            <Search
+              placeholder="글 검색..."
+              emptyResult="검색 결과가 없습니다."
+              errorText="검색 인덱스를 불러오지 못했습니다. 빌드를 다시 실행해 주세요."
+              loading="검색 중..."
+            />
           }
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/woowacourse-projects/woowa-writing-history/tree/main"

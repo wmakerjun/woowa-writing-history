@@ -2,6 +2,7 @@ import { useMDXComponents as getDocsMDXComponents } from 'nextra-theme-docs'
 import { Callout } from './components/Callout'
 import { Card } from './components/Card'
 import { CardGrid } from './components/CardGrid'
+import { GenerationArchiveCards, GenerationArchiveIntro, GenerationArchiveStatus } from './components/GenerationArchive'
 import { Placeholder } from './components/Placeholder'
 import { Toggle } from './components/Toggle'
 import { Hero } from './components/Hero'
@@ -35,6 +36,9 @@ export function useMDXComponents(components?: Record<string, unknown>) {
     Callout,
     Card,
     CardGrid,
+    GenerationArchiveCards,
+    GenerationArchiveIntro,
+    GenerationArchiveStatus,
     Placeholder,
     Toggle,
     Hero,

@@ -2,9 +2,9 @@
 author: "hain-tain"
 generation: 6
 level: "level1"
-original_filename: "Level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/hain-tain/Level1.md"
-source_path: "Level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/1d9c5a35e90e929dc2b18fa2c8a4375f88f3f174/README.md"
+source_path: "README.md"
 ---
 
 # 🏷️ 두렵거나 불안할 때 보시오

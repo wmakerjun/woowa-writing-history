@@ -3,7 +3,7 @@ author: "robinjoon"
 generation: 6
 level: "level2"
 original_filename: "level2.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/robinjoon/level2.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/7a60a4cb18eeb5272d0e724ca6b38299621dc172/level2.md"
 source_path: "level2.md"
 ---
 

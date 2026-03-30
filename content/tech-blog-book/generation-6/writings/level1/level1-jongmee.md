@@ -2,9 +2,9 @@
 author: "jongmee"
 generation: 6
 level: "level1"
-original_filename: "Level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/jongmee/Level1.md"
-source_path: "Level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/94e13dd9c01421399962af8b260544f2febdfe1f/README.md"
+source_path: "README.md"
 ---
 
 ## 관성(慣性)

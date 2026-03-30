@@ -2,9 +2,9 @@
 author: "jinhokim98"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/jinhokim98/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/91d8f0e0e054dfca24750931e3653c88db89ab60/README.md"
+source_path: "README.md"
 ---
 
 # 정리하는 것 귀찮은데 왜 하지?

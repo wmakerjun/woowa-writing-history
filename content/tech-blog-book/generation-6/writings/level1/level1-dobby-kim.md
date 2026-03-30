@@ -2,9 +2,9 @@
 author: "dobby-kim"
 generation: 6
 level: "level1"
-original_filename: "LEVEL1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/dobby-kim/level1/LEVEL1.md"
-source_path: "level1/LEVEL1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/1c4eaccabbfc4383fe044cd137da75907521b999/README.md"
+source_path: "README.md"
 ---
 
 # woowa-writing
@@ -27,7 +27,7 @@ source_path: "level1/LEVEL1.md"
 이 글이 변화하는 내 모습의 꾸준한 1년 기록의 첫걸음이 되길 바란다!
 ~~시작이 절반이라니까 벌써 반은 했다.~~
 ## 0. 돌아보기
-<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/dobby-kim/level1/image1.jpeg" alt="여동생(좌) 본인(우)" width="300"/>
+<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/1c4eaccabbfc4383fe044cd137da75907521b999/image1.jpeg" alt="여동생(좌) 본인(우)" width="300"/>
 
 2남 1녀 중 장남. 유복한 환경에서 큰 오빠, 큰 형, 부모님에게는 장남으로 항상 많은 기대를 받으며 자라왔다.
 그래서 그런지 항상 기대에 부응하려고 했고, 기대에 대한 부응은 어느새인가 몸에 자리 잡았다.
@@ -42,7 +42,7 @@ source_path: "level1/LEVEL1.md"
 
 ## 1. 그래서 지금은?
 
-<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/dobby-kim/level1/image2.jpeg" alt="우테코 웰컴키트" width="300"/>
+<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/1c4eaccabbfc4383fe044cd137da75907521b999/image2.jpeg" alt="우테코 웰컴키트" width="300"/>
 
 2024년을 시작하며 우연한 계기로 지금까지의 내 태도와 모습을 돌아보는 것의 필요성을 느꼈다. 너무 뚜렷한 주관에 사로잡혀 있지는 않은지, 혹시나 보편에서 내가 떨어져 있는 사람은 아닌지 돌아보기 시작했다. 또한, 모든 사람은 틀린 것이 아닌, 다를 뿐을 외치던 것이 사실은 자기방어 수단이 아니었는지 돌아보았다.
 
@@ -82,7 +82,7 @@ source_path: "level1/LEVEL1.md"
 
 결국 돌고 돌아도 하나의 종착지로 가게 된다는 의미를 가진 시다.
 
-<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/dobby-kim/level1/image3.jpeg" alt="여동생(좌) 본인(우)" width="300"/>
+<img src="https://raw.githubusercontent.com/woowacourse/woowa-writing/1c4eaccabbfc4383fe044cd137da75907521b999/image3.jpeg" alt="여동생(좌) 본인(우)" width="300"/>
 
 ```
 푸른밤

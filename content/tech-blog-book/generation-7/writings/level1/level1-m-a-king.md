@@ -2,14 +2,14 @@
 author: "m-a-king"
 generation: 7
 level: "level1"
-original_filename: "lv1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/m-a-king/lv1.md"
-source_path: "lv1.md"
+original_filename: "retrospection.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/b7db52e2312d332a3603a7aab0ddc59db2a678c6/retrospection.md"
+source_path: "retrospection.md"
 ---
 
 # LV.1 회고 with 유강스
 
-![이해.jpeg](https://raw.githubusercontent.com/woowacourse/woowa-writing/m-a-king/%25EC%259D%25B4%25ED%2595%25B4.jpeg)
+![이해.jpeg](https://raw.githubusercontent.com/woowacourse/woowa-writing/b7db52e2312d332a3603a7aab0ddc59db2a678c6/%25EC%259D%25B4%25ED%2595%25B4.jpeg)
 
 ---
 

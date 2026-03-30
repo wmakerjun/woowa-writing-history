@@ -3,8 +3,8 @@ author: "yehyeokbang"
 generation: 7
 level: "level1"
 original_filename: "level1_writing.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/yehyeokbang/level1_writing.md"
-source_path: "level1_writing.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/7f2a78b8ac58519164b991dc1e854c6c73e68650/.github/level1_writing.md"
+source_path: ".github/level1_writing.md"
 ---
 
 # 유연성 강화? 스터디? - 레벨1 글쓰기

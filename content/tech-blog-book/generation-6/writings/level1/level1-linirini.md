@@ -2,9 +2,9 @@
 author: "linirini"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/linirini/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/5bae622642d23ab93911ae0f42a6664d0c0c93dc/README.md"
+source_path: "README.md"
 ---
 
 # 클라이밍은 재밌는데, 개발은 왜 재미없을까요?

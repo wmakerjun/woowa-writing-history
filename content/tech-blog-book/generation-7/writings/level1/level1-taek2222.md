@@ -2,9 +2,9 @@
 author: "taek2222"
 generation: 7
 level: "level1"
-original_filename: "LEVEL1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/taek2222/LEVEL1.md"
-source_path: "LEVEL1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/ea48421119484be185db4229985722d8a69b3f23/README.md"
+source_path: "README.md"
 ---
 
 # 성장 학습 자세와 습관 🚀 

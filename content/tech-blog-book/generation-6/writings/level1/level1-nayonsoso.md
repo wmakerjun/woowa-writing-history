@@ -2,9 +2,9 @@
 author: "nayonsoso"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/nayonsoso/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/a4aa0a38674efc45949a8717821bc096b1170c90/README.md"
+source_path: "README.md"
 ---
 
   제 유연성 강화 목표는 남들과 비교하지 않기입니다. 그런데, 벌써 이걸 달성한 것 같습니다. 우테코를 시작하고 처음 1, 2주 동안은 비교 때문에 힘들었습니다. 하지만 요즘은 아무렇지도 않습니다. 이런 생각을 연극 조에 말했더니 하산하라고 하더군요. (...) 장난삼아 한 말이었겠지만, 저는 진지하게 '유연성 강화 목표를 바꿔야 하나' 고민이 들 정도로 이제는 비교가 아무렇지 않습니다.

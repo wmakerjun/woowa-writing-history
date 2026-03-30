@@ -3,8 +3,8 @@ author: "cookie-meringue"
 generation: 7
 level: "level1"
 original_filename: "meringue.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/cookie-meringue/lv1/meringue.md"
-source_path: "lv1/meringue.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/b73849f7ec7ae139b1888d26d26e509ac324b1d9/meringue.md"
+source_path: "meringue.md"
 ---
 
 # 쉬는 것의 정의와 잘 쉬는 법

@@ -3,8 +3,8 @@ author: "dobby-kim"
 generation: 6
 level: "level2"
 original_filename: "LEVEL2.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/dobby-kim/level2/LEVEL2.md"
-source_path: "level2/LEVEL2.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/6295df00ca700d576d78694d0869b042f5117b96/LEVEL2.md"
+source_path: "LEVEL2.md"
 ---
 
 

@@ -2,9 +2,9 @@
 author: "kimprodp"
 generation: 6
 level: "level1"
-original_filename: "LEVEL1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/kimprodp/LEVEL1.md"
-source_path: "LEVEL1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/014f35ff907cdb592c49b622a0ed4db72c991988/README.md"
+source_path: "README.md"
 ---
 
 # 완벽한 선택은 없다. 옳게 만드는 과정이 있을뿐						

@@ -3,8 +3,8 @@ author: "joon6093"
 generation: 7
 level: "level1"
 original_filename: "level1-writing.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/joon6093/level1-writing.md"
-source_path: "level1-writing.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/772b1cd8ba356b14658f538b7a1f417110eae4e8/.github/level1-writing.md"
+source_path: ".github/level1-writing.md"
 ---
 
 # 유강스 회고

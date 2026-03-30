@@ -2,9 +2,9 @@
 author: "youngsu5582"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/youngsu5582/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/86614a91fa380f475034681bd24bcee77269acf8/README.md"
+source_path: "README.md"
 ---
 
 ### 우리의 시작은 돈까스였다

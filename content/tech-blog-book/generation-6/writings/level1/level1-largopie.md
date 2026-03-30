@@ -2,9 +2,9 @@
 author: "largopie"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/largopie/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/53610f9f2656663bb8741ac50c0d752bf62e7bc6/README.md"
+source_path: "README.md"
 ---
 
 # 나는 성장하고 있는가?

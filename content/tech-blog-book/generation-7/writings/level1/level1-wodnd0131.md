@@ -2,9 +2,9 @@
 author: "wodnd0131"
 generation: 7
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/wodnd0131/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/f71e330b056919a781c0d48811c77868a2e2b1b8/README.md"
+source_path: "README.md"
 ---
 
 # 유연함의 힘

@@ -9,9 +9,6 @@ const config = {
   feedback: {
     content: '피드백 보내기'
   },
-  search: {
-    placeholder: '문서 검색...'
-  },
   themeSwitch: {
     light: '라이트 모드',
     dark: '다크 모드',

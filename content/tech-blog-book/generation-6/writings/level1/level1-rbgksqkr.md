@@ -3,7 +3,7 @@ author: "rbgksqkr"
 generation: 6
 level: "level1"
 original_filename: "LEVEL_1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/rbgksqkr/LEVEL_1.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/5905e89652f667584d0076ba053216831935cd70/LEVEL_1.md"
 source_path: "LEVEL_1.md"
 ---
 

@@ -3,7 +3,7 @@ author: "seongjinme"
 generation: 6
 level: "level1"
 original_filename: "Level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/seongjinme/Level1.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/1c97d18c7622d00a29084b6aeedc665fd868a147/Level1.md"
 source_path: "Level1.md"
 ---
 

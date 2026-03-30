@@ -2,9 +2,9 @@
 author: "skiende74"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/skiende74/level1.md"
-source_path: "level1.md"
+original_filename: "레벨1.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/a57a2b2adfce74704f191a6462d62d5c980c4faa/%EB%A0%88%EB%B2%A81.md"
+source_path: "레벨1.md"
 ---
 
 # 공부 잘 되는 날?

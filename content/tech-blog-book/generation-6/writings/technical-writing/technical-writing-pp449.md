@@ -1,0 +1,122 @@
+---
+author: "pp449"
+generation: 6
+level: "technical-writing"
+original_filename: "technical_writing.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/c43bf98c5c723f852668f903035be67e40d44c5a/technical_writing.md"
+source_path: "technical_writing.md"
+---
+
+# 에러바운더리 관심사 분리
+
+## 배경
+
+React로 개발할 때 다양한 방법으로 에러를 처리할 수 있다. 예를 들어 `try ~ catch` 구문으로 에러를 핸들링하거나 Tanstack Query의 isError 속성을 통해 에러 상태를 관리할 수 있다. 이러한 에러 처리 방식은 상황에 따라 선택할 수 있으며, 개인의 선호도에 따라 달라질 수 있다.
+
+이번에 다룰 에러 처리 방식은 에러 바운더리를 활용해 선언적으로 에러를 관리하는 방법이다. 이를 통해 코드의 가독성을 높이고, 사용자에게 더 좋은 경험을 제공할 수 있다.
+
+## 에러 바운더리란?
+
+`에러 바운더리(Error Boundary)`는 React에서 컴포넌트 트리 내의 자식 컴포넌트에서 발생한 JavaScript 오류를 포착하고, 해당 오류로부터 전체 애플리케이션의 오류를 방지하며, 사용자에게 Fallback UI를 표시할 수 있게 해주는 React 컴포넌트이다. 특히 렌더링이나 생명 주기 메서드에서 발생하는 JavaScript 오류를 포착하며, 버튼 클릭과 같은 이벤트 핸들러에서 발생한 오류는 에러 바운더리에서 처리되지 않는다.
+
+아래는 인프런에서 사용한 Fallback UI의 예시로, 앱 사용 중 에러가 발생할 경우 보여지게 되는 UI이다. 에러 바운더리를 이용하면 쉽게 Fallback UI를 설정할 수 있다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/inflearn.png)
+
+## 에러 바운더리 사용방법
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/class-boundary.png)
+
+위의 사진은 React에서 제공하는 에러 바운더리에 관한 코드이다. 기본적으로 React는 클래스형 에러 바운더리를 제공하기 때문에 클래스 컴포넌트에서만 사용할 수 있다. 함수형 컴포넌트 환경에서 에러 바운더리를 적용하기 위해서는 `react-error-boundary` 라이브러리를 활용하는 것이 좋다. 이 라이브러리를 사용하면 함수형 컴포넌트에서도 손쉽게 에러 바운더리를 사용할 수 있다.
+
+사용법은 간단하게 `react-error-boundary` 라이브러리를 설치한 후 에러 바운더리가 필요한 영역을 ErrorBoundary 컴포넌트로 감싸주고, 에러가 발생했을 때 렌더링할 Fallback Component를 지정해 주기만 하면 된다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code1.png)
+
+위와 같이 설정하면 `<컴포넌트 />` 내부에서 에러가 발생할 경우 에러가 상위로 전파되어 ErrorBoundary를 만나게 되고, 그에 따라 설정한 Fallback Component를 렌더링하게 된다.
+
+## 에러마다 다르게 처리하고 싶은 경우
+
+이와 같이 상위에 에러 바운더리를 정의하면, 모든 에러가 동일한 Fallback Component에서 처리된다. 예를 들어 네트워크 에러, 권한 에러, 일반적인 런타임 에러가 발생할 때마다 같은 화면이 보여진다면 사용자 경험이 떨어질 수 있다.
+
+에러마다 다르게 처리하기 위해서 커스텀 에러를 활용하는 방법이 있다. 이를 통해 특정 에러에 대해 맞춤형 UI를 표시하거나 토스트 메시지를 출력하는 등 다양한 사용자 경험을 제공할 수 있다.
+
+## 커스텀 에러
+
+커스텀 에러는 기본 `Error` 객체를 상속받아 필요한 속성과 메서드를 추가해 사용자 정의 에러를 만드는 방식이다. 이 접근을 통해 특정한 상황별 에러를 보다 명확히 구분하고, 에러를 포착했을 때 해당 상황에 맞는 처리를 할 수 있다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code2.png)
+
+위 코드처럼 기존의 `Error` 객체를 상속받아 `HTTPError`와 같은 커스텀 에러를 정의할 수 있으며, message 이외의 옵션도 직접 설정해 사용할 수 있다. 이를 통해 네트워크 오류가 발생하면 `throw new HTTPError(“네트워크 에러");`와 같이 명시적으로 에러를 던질 수 있다.
+
+### 커스텀 에러를 활용한 에러바운더리
+
+이렇게 커스텀 에러를 정의한 후 에러 바운더리 내에서 `instanceof`를 사용해 에러 타입을 구분하고, 각 타입에 따라 다른 UI나 동작을 설정할 수 있다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code3.png)
+
+위 코드에서는 `instanceof` 연산자를 통해 에러 객체 타입에 따라 분기 처리하고 있다. 예를 들어 `HTTPError`가 발생하면 네트워크 재시도를 위한 UI를 보여주고, `AuthorizationError`가 발생하면 로그인 안내를 표시하는 방식으로 구현할 수 있다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code4.png)
+
+이 정도 코드를 이용해도 충분히 에러바운더리를 이용하여 다양한 처리가 가능하다.
+하지만 폴백컴포넌트의 역할이 너무 많기에 가독성이 안좋아지는 문제가 있다.
+
+## 에러바운더리의 관심사 분리
+
+에러 핸들링의 역할과 책임을 더 명확히 하기 위해 에러 바운더리를 분리하여 각기 다른 에러를 처리하도록 설정할 수 있다. 이를 통해 가독성은 물론 재사용성도 크게 높아진다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code5.png)
+
+이렇게 하나의 에러에 대해 처리하는 에러바운더리를 각각 만들어서 관심사분리를 하여 가독성도 높이고, 재사용성도 높일 수 있다. 그러면 해당 바운더리 내부 코드를 확인해보면 아래와 같다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code6.png)
+
+이전에 에러바운더리를 선언하듯이 각각의 다른 FallbackComponent를 호출하는 선언형 에러바운더리를 만들어준다.
+
+그렇다면 우리는 특정 엘리먼트에 에러바운더리를 처리하고 싶다면 해당 부모에 원하는 에러바운리를 선언해주면 쉽게 사용할 수 있다.
+
+하지만 에러 바운더리 자식 요소에서 전파되는 모든 에러를 잡아서 처리를 하는데 어떻게 여러개의 에러바운더리를 선언하여 사용할 수 있을까?
+
+아래와 같이 에러바운더리에서 원하는 커스텀에러가 아니면 에러를 다시 상위로 전파시키면 된다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code7.png)
+
+이렇게 함으로써 각각의 에러바운더리는 **관심사 분리**가 잘 되었고, **코드의 가독성** 및 **재사용성**을 챙길 수 있게 되었다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code8.png)
+
+해당 코드를 다시 보면 자식 요소에서 리디렉션 커스텀 에러를 발생시킨다면 먼저 `네트워크에러바운더리`에 들어가게 되지만 해당 바운더리에서 네트워크 에러가 아니기에 `권한에러바운더리`로 에러를 전파시킨다. `권한에러바운더리`도 마찬가지로 본인의 관심사 에러가 아니기에 `리디렉션바운더리`로 전파시키게 되고, 해당 바운더리에서 처리가 된다.
+
+## 에러바운더리 관심사 분리의 재사용성
+
+에러바운더의 관심사 분리를 한다면 코드의 가독성이 좋아지는건 알겠는데 그러면 어떻게 재사용성이 높아질까?
+우선 코드먼저 확인해보겠다
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code9.png)
+
+해당 코드는 라우팅 설정한 코드인데 각 페이지별로 필요한 에러바운더리만 선언적으로 감싸주기만 한다면 쉽게 사용할 수 있으며 재사용하기 쉬워졌다.
+
+### 에러바운더리의 속성
+
+에러바운더리의 FallbackComponent의 컴포넌트의 props 에 FallbackProps 타입이 존재한다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code10.png)
+
+error 객체는 이때까지 봤던데로 하위 컴포넌트에서 발생시킨 에러 객체를 의미한다. 그리고 추가적으로 `resetErrorBoundary`가 있는데 해당 함수는 Fallback Page에서 다시 에러난 부분 페이지의 렌더링을 시도할 때 사용되는 함수이다.
+
+예를들어 Fallback Component의 UI가 렌더링이 되었지만 유저가 “다시 시도하기"등의 버튼을 눌러 다시 페이지에 접속을 시도하기 위해 사용되는 함수이다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code11.png)
+
+## 에러바운더리를 Tanstack Query와 사용하는 경우
+
+Tanstack Query와 함께 사용하는 경우 `resetErrorBoundary` 호출 시 캐시된 에러가 불러와지는 문제가 발생할 수 있다. 이를 방지하기 위해 `useQueryErrorResetBoundary`의 `reset` 함수를 `onReset`에 설정하여 Tanstack Query에 캐싱된 에러를 초기화할 수 있다.
+
+![img.png](https://raw.githubusercontent.com/woowacourse/woowa-writing/c43bf98c5c723f852668f903035be67e40d44c5a/img/code12.png)
+
+이를 통해 캐시된 에러가 지워지면서 사용자는 페이지를 정상적으로 다시 로드할 수 있다.
+
+## 마치며
+
+해당 예시로는 에러바운더리의 관심사 분리의 장점이 와닿지 않을수도 있다. 하지만 이렇게 에러바운더리를 구성하면서 느낀점은 나중에 에러처리에 대해 코드 가독성도 좋지만 확장성이 매우 크다는 점을 느낄 수 있었다. 아직까지 에러바운더리를 이용하여 선언적으로 에러처리했을 때 단점은 아직 발견하지 못했다. 한번 기회가 된다면 이런 방법을 이용해 에러처리를 구성해봐도 좋을것 같다!

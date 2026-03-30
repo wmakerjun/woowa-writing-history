@@ -3,8 +3,8 @@ author: "jinuemong"
 generation: 6
 level: "level3"
 original_filename: "README3.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/jinuemong/level3/README3.md"
-source_path: "level3/README3.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/f2d15d185517aeee1c672024b2bc80602ed92a3c/README3.md"
+source_path: "README3.md"
 ---
 
 

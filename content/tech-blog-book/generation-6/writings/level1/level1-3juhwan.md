@@ -2,9 +2,9 @@
 author: "3juhwan"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/3juhwan/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/39056b518d1ea6c84196595ba46ee6f24ea9450d/README.md"
+source_path: "README.md"
 ---
 
 # 나는 더 이상 몰입하고 싶지 않다.

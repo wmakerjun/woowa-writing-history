@@ -2,9 +2,9 @@
 author: "dbsdndcks"
 generation: 7
 level: "level1"
-original_filename: "Lv1_Lemon.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/dbsdndcks/Lv1_Lemon.md"
-source_path: "Lv1_Lemon.md"
+original_filename: "lemon.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/32a8c36afe55c1e602a109b197ffec53c69fe624/lemon.md"
+source_path: "lemon.md"
 ---
 
 ## 💡 레벨1 글쓰기 미션

@@ -1,0 +1,15 @@
+---
+author: "lowoon"
+generation: 2
+level: "level2"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing-2/blob/7fbdcc3c34ac381bfe93b81232d7f22e82cea068/README.md"
+source_path: "README.md"
+---
+
+# woowa-writing-2
+
+각 Level 주제 글쓰기
+
+- [x] [Level1 - 기록 : 우아한 테크코스 1달 생활기](https://github.com/lowoon/woowa-writing-2/tree/lowoon/Level1)
+- [x] [Level2 - 성장 : 우테코에서 실천중인 나만의 효과적인 공부법](https://github.com/lowoon/woowa-writing-2/tree/lowoon/Level2)

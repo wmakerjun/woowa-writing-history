@@ -2,9 +2,9 @@
 author: "mun-kyeong"
 generation: 7
 level: "level1"
-original_filename: "Level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/mun-kyeong/Level1.md"
-source_path: "Level1.md"
+original_filename: "technical-writing.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/6f71407b2cdad98a6ee076cbe6d36f497a3e25de/technical-writing.md"
+source_path: "technical-writing.md"
 ---
 
 # 유강스와 함께하는 한달 간의 회고

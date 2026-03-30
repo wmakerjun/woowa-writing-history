@@ -1,4 +1,5 @@
 export { Callout } from './Callout'
 export { Card } from './Card'
 export { CardGrid } from './CardGrid'
+export { GenerationArchiveCards, GenerationArchiveIntro, GenerationArchiveStatus } from './GenerationArchive'
 export { Placeholder } from './Placeholder'

@@ -2,9 +2,9 @@
 author: "minji2219"
 generation: 7
 level: "level1"
-original_filename: "level1-writing.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/minji2219/level1-writing.md"
-source_path: "level1-writing.md"
+original_filename: "technical-writing.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/75c879fa24e299ac69e72697bf866df55d2d1bf7/technical-writing.md"
+source_path: "technical-writing.md"
 ---
 
 ### 도전이란?

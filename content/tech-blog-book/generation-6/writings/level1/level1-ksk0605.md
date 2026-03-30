@@ -2,9 +2,9 @@
 author: "ksk0605"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/ksk0605/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/4b5827949422aa3c015c09233883835143b0fb6c/README.md"
+source_path: "README.md"
 ---
 
 # 낭만 개발자 성장기 
@@ -16,7 +16,7 @@ source_path: "level1.md"
 귀인은 한 사람의 운명을 바꾼다고들 한다. 거짓말이 아닌게 성공한 사람들은 꼭 주변에 한명씩 귀인이 있더라. 성인이 되고 근 8년간 내 가치관은 여러사람들에 의해 수차례 변해왔다. 그리고 우테코에서 20대 마지막 귀인을 만났다.
 
 <p align="center" style="color:gray">
-  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/ksk0605/images/my_dream.jpg"/>
+  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/4b5827949422aa3c015c09233883835143b0fb6c/images/my_dream.jpg"/>
   포비야, 내꿈은 너야
 </p> 
 
@@ -32,7 +32,7 @@ source_path: "level1.md"
 3학년 2학기에 들어서면서 정신을 차린건지 아니면 뭐라도 씌였는지 한 일년간을 미친듯이 개발공부를 했다. 학기 중 동아리 활동 2개를 기본에 프로젝트는 2-3개씩 병행하며 하루에 3시간씩 자면서 거의 죽어가던게 기억이 난다. 이제와서 보면 이력서 스펙 한 두줄 채워넣을까 말까 싶다. 
 
 <p align="center" style="color:gray">
-  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/ksk0605/images/mental_basasac.jpg" width=200/>
+  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/4b5827949422aa3c015c09233883835143b0fb6c/images/mental_basasac.jpg" width=200/>
 </p> 
 
 
@@ -43,7 +43,7 @@ source_path: "level1.md"
 그러다 문득 이런 생각이 들었다. 근 일년간 행복했던 기억이 별로 없었다. 결단이 필요했다. 
 
 <p align="center" style="color:gray">
-  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/ksk0605/images/no_effort.jpg" width=200/>
+  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/4b5827949422aa3c015c09233883835143b0fb6c/images/no_effort.jpg" width=200/>
 </p> 
 
 생각해보면 그렇다. 남들이 사는데로 살면 그게 행복일까? 대기업에 취업하고, 연봉 1억 넘고, 내 집 있고 차 있으면 행복할까? 신기하게, 가져본 것도 아닌데도 아니라고 대답했다. 그래서 반대로 열심히 살지 않아보았다. 모두가 가장 열심히 투자하는 시기인 4학년 마지막 학기 때의 일이다.
@@ -59,7 +59,7 @@ source_path: "level1.md"
 
 
 <p align="center" style="color:gray">
-  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/ksk0605/images/pobi_bodyprofile.jpg" width=400/>
+  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/4b5827949422aa3c015c09233883835143b0fb6c/images/pobi_bodyprofile.jpg" width=400/>
 </p> 
 
 > 여러분 우테코가 도움이 안될 것 같으면 때려치세요. 그리고 정말 하고 싶은 것, 자기가 성장할 수 있는 일을 찾으세요. 대신 여러분은 성인이니까 선택에 책임을 지시면 됩니다.
@@ -79,7 +79,7 @@ source_path: "level1.md"
 너무 열심히 하고 싶진 않다고 코치에게 말했던 것이 기억난다. 또 의식적으로 연습하기 위해 더 버리는 것도 해보고 있다. 최근에는 지속해오던 알고리즘 공부, cs 공부도 하지 않고 있다. 우테코에서 프로그래밍 자체를 즐기는 것으로 만족한다. 
 
 <p align="center" style="color:gray">
-  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/ksk0605/images/just.jpg" width=400/>
+  <img style="margin:50px 0 10px 0" src="https://raw.githubusercontent.com/woowacourse/woowa-writing/4b5827949422aa3c015c09233883835143b0fb6c/images/just.jpg" width=400/>
 </p> 
 
 반란군처럼 사는 것, 세상의 기준에 의문을 품어보는 것은 쉽지 않다. 가본적 없는 길이라서 두렵고 그래서 배로 즐겁다. 아는 맛보다는 모르는 맛에 더 즐거움을 느끼는 사람이라면 한번쯤 포비처럼 살아보는 것도 낭만 아닐까.

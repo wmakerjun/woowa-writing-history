@@ -2,9 +2,9 @@
 author: "mingyum-kim"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/mingyum-kim/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/21f4e6c671e56f89e19638bc6cd588bf316a9873/README.md"
+source_path: "README.md"
 ---
 
 # woowa-writing

@@ -3,7 +3,7 @@ author: "gaeun5744"
 generation: 6
 level: "level1"
 original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/gaeun5744/level1.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/a95dbf17813f134813488570e4ba90fabe74ad95/level1.md"
 source_path: "level1.md"
 ---
 

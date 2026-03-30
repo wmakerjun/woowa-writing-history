@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "postbuild": "node scripts/build-search-index.mjs",
+    "start": "next start",
+    "validate-archive": "node scripts/validate-archive.mjs"
   },
   "dependencies": {
     "next": "^15.1.0",
@@ -17,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
+    "pagefind": "^1.4.0",
     "typescript": "^5.7.0"
   }
 }

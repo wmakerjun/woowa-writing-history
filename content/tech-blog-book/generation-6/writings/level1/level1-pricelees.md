@@ -3,7 +3,7 @@ author: "pricelees"
 generation: 6
 level: "level1"
 original_filename: "LEVEL1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/pricelees/LEVEL1.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/f26718a35a3447032ad2a6f6706c143d14249e14/LEVEL1.md"
 source_path: "LEVEL1.md"
 ---
 

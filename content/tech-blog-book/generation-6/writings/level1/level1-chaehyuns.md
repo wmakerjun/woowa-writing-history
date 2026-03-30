@@ -2,9 +2,9 @@
 author: "chaehyuns"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/chaehyuns/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/90966cbb57f2d1710297f5216a18321e5a34c5b0/README.md"
+source_path: "README.md"
 ---
 
 # 괜차나 거친 우테코에 뛰어든건 나니까 암 오케이 ꒰◍ˊ◡ˋ꒱੭⁾⁾

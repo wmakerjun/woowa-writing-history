@@ -2,9 +2,9 @@
 author: "zeus6768"
 generation: 6
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/zeus6768/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/3eb1e8e11b02423f6b2f74d94a1ad94a41c0b292/README.md"
+source_path: "README.md"
 ---
 
 # 레벨1 회고

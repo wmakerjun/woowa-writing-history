@@ -2,9 +2,9 @@
 author: "ljhee92"
 generation: 7
 level: "level1"
-original_filename: "level1.md"
-source: "https://github.com/woowacourse/woowa-writing/blob/ljhee92/level1.md"
-source_path: "level1.md"
+original_filename: "README.md"
+source: "https://github.com/woowacourse/woowa-writing/blob/c9239b743c7122690dc74c1407e6acf47c492cc7/README.md"
+source_path: "README.md"
 ---
 
 # 레벨1 글쓰기
