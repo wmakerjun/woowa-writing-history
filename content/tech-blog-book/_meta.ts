@@ -1,6 +1,5 @@
 export default {
   index: '개요',
-  'verification-status': '검증 현황',
   '-- generation': {
     type: 'separator',
     title: '기수별 기록'

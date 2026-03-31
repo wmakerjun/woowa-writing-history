@@ -13,13 +13,68 @@ const years = {
 }
 
 const validationStats = {
-  1: { submitters: 46, representativeSubmissions: 181, verificationBasis: 'GitHub PR 기준' },
-  2: { submitters: 47, representativeSubmissions: 167, verificationBasis: '브랜치 PR 커밋 로그 기준' },
-  3: { submitters: 67, representativeSubmissions: 200, verificationBasis: '브랜치 PR 커밋 로그 기준' },
-  4: { submitters: 114, representativeSubmissions: 322, verificationBasis: '브랜치 PR 커밋 로그 기준' },
-  5: { submitters: 163, representativeSubmissions: 474, verificationBasis: '브랜치 PR 커밋 로그 기준' },
-  6: { submitters: 140, representativeSubmissions: 545, verificationBasis: '공유 저장소 브랜치 PR 커밋 로그 기준' },
-  7: { submitters: 144, representativeSubmissions: 286, verificationBasis: '공유 저장소 브랜치 PR 커밋 로그 기준' }
+  1: {
+    attendanceCount: 45,
+    prSubmitters: 46,
+    prSubmissionPairs: 181,
+    verificationBasis: 'GitHub merged PR 기준',
+    prLevelCounts: { level1: 46, level2: 45, level3: 45, level4: 45 },
+    missingPairs: 0,
+    extraPairs: 0
+  },
+  2: {
+    attendanceCount: 51,
+    prSubmitters: 50,
+    prSubmissionPairs: 195,
+    verificationBasis: 'GitHub merged PR 기준',
+    prLevelCounts: { level1: 50, level2: 49, level3: 48, level4: 48 },
+    missingPairs: 57,
+    extraPairs: 39
+  },
+  3: {
+    attendanceCount: 78,
+    prSubmitters: 77,
+    prSubmissionPairs: 257,
+    verificationBasis: 'GitHub merged PR 기준',
+    prLevelCounts: { level1: 75, level2: 76, level3: 75, level4: 31 },
+    missingPairs: 55,
+    extraPairs: 22
+  },
+  4: {
+    attendanceCount: 116,
+    prSubmitters: 116,
+    prSubmissionPairs: 354,
+    verificationBasis: 'GitHub merged PR 기준',
+    prLevelCounts: { level1: 116, level2: 115, level3: 115, level4: 8 },
+    missingPairs: 26,
+    extraPairs: 20
+  },
+  5: {
+    attendanceCount: 170,
+    prSubmitters: 170,
+    prSubmissionPairs: 524,
+    verificationBasis: 'GitHub merged PR 기준',
+    prLevelCounts: { level1: 169, level2: 167, level3: 25, level4: 163 },
+    missingPairs: 65,
+    extraPairs: 51
+  },
+  6: {
+    attendanceCount: 140,
+    prSubmitters: 140,
+    prSubmissionPairs: 552,
+    verificationBasis: 'GitHub merged PR 기준 (공유 저장소 연도 분리)',
+    prLevelCounts: { level1: 139, level2: 139, level3: 137, 'technical-writing': 137 },
+    missingPairs: 25,
+    extraPairs: 18
+  },
+  7: {
+    prSubmitters: 144,
+    prSubmissionPairs: 285,
+    verificationBasis: 'GitHub merged PR 기준 (공유 저장소 연도 분리)',
+    prLevelCounts: { level1: 143, level2: 142 },
+    missingPairs: 8,
+    extraPairs: 9
+  }
 }
 
 const levelOrder = ['level1', 'level2', 'level3', 'level4', 'technical-writing', 'level5', 'unclassified']
@@ -33,8 +88,8 @@ const levelLabels = {
   unclassified: '기타 분류'
 }
 
-// Curated generation overview pages are maintained manually.
-// This script only regenerates shared summary data and navigation pages.
+// Curated overview pages are maintained manually.
+// This script only regenerates shared summary data and per-generation navigation pages.
 
 function walk(dirPath) {
   return fs.readdirSync(dirPath, { withFileTypes: true }).flatMap((entry) => {
@@ -46,13 +101,20 @@ function walk(dirPath) {
 function collectGenerationSummary(generation) {
   const writingsDir = path.join('content', 'tech-blog-book', `generation-${generation}`, 'writings')
   const files = walk(writingsDir).filter((file) => file.endsWith('.md'))
-  const levelCounts = {}
+  const archiveLevelCounts = {}
+  const archivePairs = new Set()
+  const archiveSubmitters = new Set()
 
   for (const filePath of files) {
     const text = fs.readFileSync(filePath, 'utf8')
     const level = (text.match(/^level:\s*"([^"]+)"/m) || [])[1]
+    const author = (text.match(/^author:\s*"([^"]+)"/m) || [])[1]
     if (level) {
-      levelCounts[level] = (levelCounts[level] ?? 0) + 1
+      archiveLevelCounts[level] = (archiveLevelCounts[level] ?? 0) + 1
+    }
+    if (level && author) {
+      archivePairs.add(`${author.toLowerCase()}::${level}`)
+      archiveSubmitters.add(author.toLowerCase())
     }
   }
 
@@ -62,12 +124,18 @@ function collectGenerationSummary(generation) {
   return {
     generation,
     year: years[generation],
-    submitters: stats.submitters,
-    representativeSubmissions: stats.representativeSubmissions,
+    attendanceCount: stats.attendanceCount ?? null,
+    prSubmitters: stats.prSubmitters,
+    prSubmissionPairs: stats.prSubmissionPairs,
+    archiveSubmitters: archiveSubmitters.size,
+    archivePairs: archivePairs.size,
     collectedFiles,
-    extras: collectedFiles - stats.representativeSubmissions,
+    supplementalFiles: collectedFiles - archivePairs.size,
     verificationBasis: stats.verificationBasis,
-    levelCounts
+    prLevelCounts: stats.prLevelCounts,
+    archiveLevelCounts,
+    missingPairs: stats.missingPairs,
+    extraPairs: stats.extraPairs
   }
 }
 
@@ -79,54 +147,21 @@ function formatMetaKey(key) {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : `'${key}'`
 }
 
-function formatOverviewMeta(summary) {
-  return `${summary.submitters}명 · 대표 ${summary.representativeSubmissions}건 · 수집 ${summary.collectedFiles}편`
-}
-
 function formatOverviewLine(summary) {
-  return `제출자 ${summary.submitters}명 · 대표 제출 ${summary.representativeSubmissions}/${summary.representativeSubmissions}건 · 전체 수집 ${summary.collectedFiles}편`
+  return `PR 기준 제출자 ${summary.prSubmitters}명 · PR 제출 ${summary.prSubmissionPairs}건 · 현재 아카이브 ${summary.collectedFiles}편`
 }
 
 function buildNote(summary) {
-  if (summary.generation === 6) {
-    return `${summary.verificationBasis}으로 대표 제출을 검증했고, 현재 누락은 없습니다. 최종 미션 제출은 \`테크니컬 라이팅\`으로 별도 분류했습니다.`
-  }
+  const attendanceText = summary.attendanceCount
+    ? `출석부 ${summary.attendanceCount}명 대비 PR 제출자는 ${summary.prSubmitters}명입니다.`
+    : `현재 기수는 PR 제출자 ${summary.prSubmitters}명으로 확인됩니다.`
 
-  if (summary.extras > 0) {
-    return `${summary.verificationBasis}으로 대표 제출을 검증했습니다. 전체 수집에는 대표 제출 외에 README 기반 초안과 보조 문서 ${summary.extras}편이 함께 포함됩니다.`
-  }
+  const archiveText =
+    summary.missingPairs > 0 || summary.extraPairs > 0
+      ? `현재 아카이브는 PR 기준 author-level 쌍보다 ${summary.missingPairs}건 부족하고, ${summary.extraPairs}건은 다른 계정명 또는 분류로 저장돼 있습니다.`
+      : '현재 아카이브는 PR 기준과 일치합니다.'
 
-  return `${summary.verificationBasis}으로 대표 제출을 검증했고, 현재 누락은 없습니다.`
-}
-
-function buildArchiveStatusTable(summary) {
-  const rows = [
-    ['대표 제출', `${summary.representativeSubmissions}건`],
-    ['전체 수집', `${summary.collectedFiles}편`]
-  ]
-
-  if (summary.extras > 0) {
-    rows.push(['추가 수집 문서', `${summary.extras}편`])
-  }
-
-  const technicalWritingCount = summary.levelCounts['technical-writing'] ?? 0
-  if (technicalWritingCount > 0) {
-    rows.push(['테크니컬 라이팅', `${technicalWritingCount}편`])
-  }
-
-  const unclassifiedCount = summary.levelCounts.unclassified ?? 0
-  if (unclassifiedCount > 0) {
-    rows.push(['기타 분류 문서', `${unclassifiedCount}편`])
-  }
-
-  return [
-    '## 아카이브 현황',
-    '',
-    '| 항목 | 수치 |',
-    '|---|---:|',
-    ...rows.map(([label, value]) => `| ${label} | ${value} |`),
-    ''
-  ]
+  return `${summary.verificationBasis}으로 검토했습니다. ${attendanceText} ${archiveText}`
 }
 
 function writeGeneratedArchiveSummaries(summaries) {
@@ -138,112 +173,24 @@ function writeGeneratedArchiveSummaries(summaries) {
     'export type ArchiveSummary = {',
     '  generation: number',
     '  year: number',
-    '  submitters: number',
-    '  representativeSubmissions: number',
+    '  attendanceCount: number | null',
+    '  prSubmitters: number',
+    '  prSubmissionPairs: number',
+    '  archiveSubmitters: number',
+    '  archivePairs: number',
     '  collectedFiles: number',
-    '  extras: number',
+    '  supplementalFiles: number',
     '  verificationBasis: string',
-    '  levelCounts: Record<string, number>',
+    '  prLevelCounts: Record<string, number>',
+    '  archiveLevelCounts: Record<string, number>',
+    '  missingPairs: number',
+    '  extraPairs: number',
     '}',
     '',
     `export const archiveSummaries: Record<number, ArchiveSummary> = ${JSON.stringify(payload, null, 2)}`
   ]
 
   fs.writeFileSync(filePath, `${lines.join('\n')}\n`, 'utf8')
-}
-
-function writeTopLevelIndex(summaries) {
-  const lines = [
-    '# 우아한테크코스 크루 글쓰기 아카이브',
-    '',
-    '우아한테크코스 크루들의 글을 기수별로 모아보는 이야기 저장소입니다.',
-    '',
-    '<Callout type="info">',
-    '카드 메타는 `제출자 / 대표 제출 / 전체 수집` 순서입니다. 대표 제출은 기수별 검증 기준으로 확인한 제출 건수이고, 전체 수집은 README 등 보조 문서를 포함한 실제 문서 수입니다.',
-    '</Callout>',
-    '',
-    '## 기수별 아카이브',
-    '',
-    '<CardGrid>'
-  ]
-
-  for (const summary of summaries) {
-    lines.push(`  <Card title="${summary.generation}기 (${summary.year})" href="/tech-blog-book/generation-${summary.generation}" meta="${formatOverviewMeta(summary)}">`)
-    lines.push(`    ${summary.generation === 1 ? '우아한테크코스의 시작과 첫 크루들의 기록' : generationDescription(summary.generation)}`)
-    lines.push('  </Card>')
-  }
-
-  lines.push('  <Card title="8기 (2026)" meta="진행 중" disabled>')
-  lines.push('    현재 진행 중인 8기 크루들의 기록은 순차적으로 공개됩니다.')
-  lines.push('  </Card>')
-  lines.push('</CardGrid>')
-  lines.push('')
-  lines.push('## 읽는 방법')
-  lines.push('')
-  lines.push('- 관심 있는 기수를 먼저 선택해 전체 분위기를 파악해 보세요.')
-  lines.push('- `대표 제출`과 `전체 수집`을 함께 보면 아카이브 정리 상태를 빠르게 확인할 수 있습니다.')
-  lines.push('- 읽은 뒤에는 자신의 경험을 글로 남겨 다음 기록과 연결해 보세요.')
-
-  fs.writeFileSync(path.join('content', 'tech-blog-book', 'index.mdx'), `${lines.join('\n')}\n`, 'utf8')
-}
-
-function buildVerificationNote(summary) {
-  if (summary.generation === 1) {
-    return '출석부 45명 외 PR 기준 제출자 1명이 추가 확인됐습니다.'
-  }
-
-  if (summary.generation === 6) {
-    return `테크니컬 라이팅 ${summary.levelCounts['technical-writing'] ?? 0}편을 별도 분류했습니다.`
-  }
-
-  if (summary.extras > 0) {
-    return `추가 수집 문서 ${summary.extras}편이 함께 보관됩니다.`
-  }
-
-  return '현재 누락 없이 정리돼 있습니다.'
-}
-
-function writeVerificationStatusPage(summaries) {
-  const lines = [
-    '# 아카이브 검증 현황',
-    '',
-    '기수별 아카이브의 현재 검증 결과를 한 번에 확인할 수 있는 요약 페이지입니다.',
-    '',
-    '<Callout type="info">',
-    '`대표 제출`은 PR 또는 브랜치 커밋 로그 기준으로 확인한 제출 건수이고, `전체 수집`은 아카이브에 실제 보관 중인 문서 수입니다.',
-    '</Callout>',
-    '',
-    '| 기수 | 제출자 | 대표 제출 | 전체 수집 | 추가 문서 | 검증 기준 | 비고 |',
-    '|---|---:|---:|---:|---:|---|---|'
-  ]
-
-  for (const summary of summaries) {
-    lines.push(`| [${summary.generation}기](/tech-blog-book/generation-${summary.generation}) | ${summary.submitters}명 | ${summary.representativeSubmissions}건 | ${summary.collectedFiles}편 | ${summary.extras}편 | ${summary.verificationBasis} | ${buildVerificationNote(summary)} |`)
-  }
-
-  lines.push('')
-  const targetDir = path.join('content', 'tech-blog-book', 'verification-status')
-  fs.mkdirSync(targetDir, { recursive: true })
-  fs.writeFileSync(path.join(targetDir, 'index.mdx'), `${lines.join('\n')}\n`, 'utf8')
-}
-
-function generationDescription(generation) {
-  switch (generation) {
-    case 2:
-      return '환경 변화 속에서도 이어진 학습과 성장의 기록'
-    case 3:
-      return '팀 학습 문화가 자리 잡던 시기의 글 모음'
-    case 4:
-      return '더 단단해진 협업과 개발 경험을 담은 기록'
-    case 5:
-      return '기수별 경험이 깊어진 시기의 글쓰기 아카이브'
-    case 6:
-      return '변화하는 개발 환경 속에서 축적된 성장 이야기'
-    case 7:
-      return '최신 기수의 학습과 협업 경험을 모은 기록'
-    default:
-      return ''
-  }
 }
 
 function writeGenerationMeta(summary) {
@@ -262,7 +209,7 @@ function writeWritingsMeta(summary) {
   const filePath = path.join('content', 'tech-blog-book', `generation-${summary.generation}`, 'writings', '_meta.ts')
   const lines = ['export default {']
   for (const level of levelOrder) {
-    const count = summary.levelCounts[level] ?? 0
+    const count = summary.archiveLevelCounts[level] ?? 0
     if (count === 0) continue
     lines.push(`  ${formatMetaKey(level)}: '${getLevelLabel(summary.generation, level)} (${count}편)',`)
   }
@@ -272,33 +219,55 @@ function writeWritingsMeta(summary) {
 
 function writeWritingsIndex(summary) {
   const filePath = path.join('content', 'tech-blog-book', `generation-${summary.generation}`, 'writings', 'index.mdx')
+  const levelEntries = levelOrder
+    .map((level) => [level, summary.archiveLevelCounts[level] ?? 0])
+    .filter(([, count]) => count > 0)
+  const leadingLevels = levelEntries
+    .filter(([level]) => level !== 'unclassified')
+    .slice(0, 4)
+    .map(([level, count]) => `${getLevelLabel(summary.generation, level)} ${count}편`)
+    .join(', ')
+  const noteLines = [
+    `- 확인된 작성자 규모: ${summary.prSubmitters}명`,
+    `- 현재 열람 가능한 글: ${summary.collectedFiles}편`
+  ]
+
+  if (summary.archiveLevelCounts['technical-writing']) {
+    noteLines.push(`- 특징: \`테크니컬 라이팅\` ${summary.archiveLevelCounts['technical-writing']}편이 별도 축으로 분리되어 있습니다.`)
+  } else if (summary.archiveLevelCounts.unclassified) {
+    noteLines.push(`- 특징: 파일명 규칙으로 바로 분류되지 않은 글이 ${summary.archiveLevelCounts.unclassified}편 있습니다.`)
+  } else {
+    noteLines.push('- 특징: 현재 분류된 레벨 기준으로 바로 탐색할 수 있습니다.')
+  }
+
+  if (summary.missingPairs > 0 || summary.extraPairs > 0) {
+    noteLines.push(`- 참고: 현재 아카이브와 PR 기준 사이에는 아직 차이가 있습니다. 자세한 맥락은 개요 페이지에서 확인할 수 있습니다.`)
+  }
+
   const lines = [
     `# ${summary.generation}기 글 모음`,
     '',
-    formatOverviewLine(summary),
+    '<Callout type="info">',
+    `이 페이지는 원문 탐색용 모음입니다. 기수의 분위기와 역사적 맥락은 [${summary.generation}기 개요](/tech-blog-book/generation-${summary.generation})를 먼저 읽는 편이 좋습니다.`,
+    '</Callout>',
     '',
-    buildNote(summary),
+    `현재 아카이브는 **${summary.collectedFiles}편**이며, 주된 축은 ${leadingLevels || '분류 대기 문서'}입니다.`,
     '',
-    ...buildArchiveStatusTable(summary),
-    '| 구분 | 수집 문서 |',
-    '|---|---:|'
+    '## 레벨별 입구',
+    '',
+    `<GenerationArchiveCards generation={${summary.generation}} />`,
+    '',
+    '## 짧은 메모',
+    '',
+    ...noteLines,
+    ''
   ]
-
-  for (const level of levelOrder) {
-    const count = summary.levelCounts[level] ?? 0
-    if (count === 0) continue
-    lines.push(`| [${getLevelLabel(summary.generation, level)}](/tech-blog-book/generation-${summary.generation}/writings/${level}) | ${count}편 |`)
-  }
-
-  lines.push('')
   fs.writeFileSync(filePath, `${lines.join('\n')}\n`, 'utf8')
 }
 
 const summaries = generations.map(collectGenerationSummary)
 
 writeGeneratedArchiveSummaries(summaries)
-writeTopLevelIndex(summaries)
-writeVerificationStatusPage(summaries)
 
 for (const summary of summaries) {
   writeGenerationMeta(summary)

@@ -27,27 +27,23 @@ function getSummary(generation: number): ArchiveSummary {
 }
 
 function formatOverviewLine(summary: ArchiveSummary) {
-  return `제출자 ${summary.submitters}명 · 대표 제출 ${summary.representativeSubmissions}/${summary.representativeSubmissions}건 · 전체 수집 ${summary.collectedFiles}편`
+  return `PR 기준 제출자 ${summary.prSubmitters}명 · PR 제출 ${summary.prSubmissionPairs}건 · 현재 아카이브 ${summary.collectedFiles}편`
 }
 
 function renderNote(summary: ArchiveSummary) {
-  if (summary.generation === 6) {
-    return (
-      <>
-        {summary.verificationBasis}으로 대표 제출을 검증했고, 현재 누락은 없습니다. 최종 미션 제출은 <code>테크니컬 라이팅</code>으로 별도 분류했습니다.
-      </>
-    )
-  }
-
-  if (summary.extras > 0) {
-    return (
-      <>
-        {summary.verificationBasis}으로 대표 제출을 검증했습니다. 전체 수집에는 대표 제출 외에 README 기반 초안과 보조 문서 {summary.extras}편이 함께 포함됩니다.
-      </>
-    )
-  }
-
-  return <>{summary.verificationBasis}으로 대표 제출을 검증했고, 현재 누락은 없습니다.</>
+  return (
+    <>
+      {summary.verificationBasis}으로 검토했습니다.{' '}
+      {summary.attendanceCount ? <>출석부 {summary.attendanceCount}명 대비 PR 제출자는 {summary.prSubmitters}명입니다. </> : null}
+      {summary.missingPairs > 0 || summary.extraPairs > 0 ? (
+        <>
+          현재 아카이브는 PR 기준 author-level 쌍보다 {summary.missingPairs}건 부족하고, {summary.extraPairs}건은 다른 계정명 또는 분류로 저장돼 있습니다.
+        </>
+      ) : (
+        <>현재 아카이브는 PR 기준과 일치합니다.</>
+      )}
+    </>
+  )
 }
 
 function getLevelLabel(level: string) {
@@ -67,21 +63,33 @@ export function GenerationArchiveIntro({ generation }: GenerationArchiveProps) {
 
 export function GenerationArchiveStatus({ generation }: GenerationArchiveProps) {
   const summary = getSummary(generation)
-  const rows: Array<[string, string]> = [
-    ['대표 제출', `${summary.representativeSubmissions}건`],
-    ['전체 수집', `${summary.collectedFiles}편`]
-  ]
+  const rows: Array<[string, string]> = []
 
-  if (summary.extras > 0) {
-    rows.push(['추가 수집 문서', `${summary.extras}편`])
+  if (summary.attendanceCount) {
+    rows.push(['출석부 인원', `${summary.attendanceCount}명`])
   }
 
-  const technicalWritingCount = summary.levelCounts['technical-writing'] ?? 0
+  rows.push(['PR 기준 제출자', `${summary.prSubmitters}명`])
+  rows.push(['PR 기준 제출', `${summary.prSubmissionPairs}건`])
+  rows.push(['현재 아카이브 작성자', `${summary.archiveSubmitters}명`])
+  rows.push(['현재 아카이브 author-level 쌍', `${summary.archivePairs}건`])
+  rows.push(['현재 아카이브 파일', `${summary.collectedFiles}편`])
+
+  if (summary.supplementalFiles > 0) {
+    rows.push(['보조/중복 파일', `${summary.supplementalFiles}편`])
+  }
+
+  if (summary.missingPairs > 0 || summary.extraPairs > 0) {
+    rows.push(['PR 기준 미반영', `${summary.missingPairs}건`])
+    rows.push(['계정명/분류 불일치', `${summary.extraPairs}건`])
+  }
+
+  const technicalWritingCount = summary.archiveLevelCounts['technical-writing'] ?? 0
   if (technicalWritingCount > 0) {
     rows.push(['테크니컬 라이팅', `${technicalWritingCount}편`])
   }
 
-  const unclassifiedCount = summary.levelCounts.unclassified ?? 0
+  const unclassifiedCount = summary.archiveLevelCounts.unclassified ?? 0
   if (unclassifiedCount > 0) {
     rows.push(['기타 분류 문서', `${unclassifiedCount}편`])
   }
@@ -112,7 +120,7 @@ export function GenerationArchiveCards({ generation }: GenerationArchiveProps) {
   return (
     <CardGrid>
       {levelOrder.flatMap((level) => {
-        const count = summary.levelCounts[level] ?? 0
+        const count = summary.archiveLevelCounts[level] ?? 0
         if (count === 0) {
           return []
         }
